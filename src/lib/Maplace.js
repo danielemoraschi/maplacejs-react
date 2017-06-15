@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MaplaceLib from 'maplace-js';
+import PropUtils from './PropUtils';
 
 
 /**
@@ -15,22 +16,11 @@ const maplaceLib = new MaplaceLib();
 class Maplace extends Component {
 
   /**
-   *
-   */
-  whiteListProps() {
-    this.propsWhitelisted = {};
-    Object.keys(Maplace.propTypes).forEach(key => {
-      this.props[key] && (this.propsWhitelisted[key] = this.props[key]);
-    });
-  }
-
-  /**
    * Generates the array of locations
    * from the children elements.
    */
   componentWillMount() {
-    this.whiteListProps();
-
+    this.propsWhitelisted = PropUtils.whiteListProps(Maplace.propTypes, this.props);
     this.locationsGeneratedViaChildren = {
       locations: React.Children.map(this.props.children, child => {
         return {
@@ -45,7 +35,6 @@ class Maplace extends Component {
    * @returns {JSX}
    */
   render() {
-    console.log(this.propsWhitelisted)
     return (
       <div
         className={this.props.class_name}
@@ -61,7 +50,7 @@ class Maplace extends Component {
    */
   componentDidMount() {
     maplaceLib.Load({
-      ...this.props,
+      ...this.propsWhitelisted,
       ...this.locationsGeneratedViaChildren,
     });
   }

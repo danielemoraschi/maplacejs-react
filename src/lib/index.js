@@ -1,1 +1,1 @@
-export {default} from './maplace.react';
+export {default} from './Maplace';
