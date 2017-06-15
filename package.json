@@ -54,6 +54,6 @@
     "Polygon",
     "Circle",
     "Directions",
-    "InfoWindow",
-  ],
+    "InfoWindow"
+  ]
 }
