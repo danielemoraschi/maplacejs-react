@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-import Maplace from './lib/index';
+import Maplace from './lib/Maplace';
+import Location from './lib/Location';
 
 class App extends Component {
   render() {
@@ -13,12 +13,22 @@ class App extends Component {
             class_name='map'
             map_div='#gmap'
             show_markers={true}
-            locations={[{
-                lat: 45.9,
-                lon: 10.9,
-                zoom: 8
-            }]}
-          />
+          >
+            {
+              //<{Marker|Circle|Polyline|Polygon|Fusion|Direction}>
+              //</Type>
+            }
+            <Location
+              title="One"
+              lat={45.9}
+              lon={10.9}
+            />
+            <Location
+              title="Two"
+              lat={46.9}
+              lon={11.9}
+            />
+          </Maplace>
         </div>
         <p className="App-intro">
           MaplaceJs / React
