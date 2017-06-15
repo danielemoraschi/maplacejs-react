@@ -1,0 +1,59 @@
+{
+  "name": "maplacejs-react",
+  "version": "0.1.0",
+  "description": "ReactJs Google Maps plugin and markers helper.",
+  "homepage": "https://github.com/danielemoraschi/maplacejs-react",
+  "author": "Daniele Moraschi <daniele.moraschi@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danielemoraschi/maplacejs-react/issues"
+  },
+  "files": [
+    "lib/",
+    "src/lib",
+    "package.json",
+    "README.md",
+    "LICENSE-MIT"
+  ],
+  "dependencies": {
+    "maplace-js": "^0.2.10",
+    "react": "^15.6.0",
+    "react-dom": "^15.6.0"
+  },
+  "devDependencies": {
+    "react-scripts": "0.9.x"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "keywords": [
+    "React.js",
+    "ReactJs",
+    "React",
+    "react-component",
+    "google",
+    "map",
+    "maps",
+    "place",
+    "places",
+    "googlemap",
+    "googlemaps",
+    "google-map",
+    "google-maps",
+    "google map",
+    "google maps",
+    "maplace",
+    "maplacejs",
+    "maplace.js",
+    "Map",
+    "Marker",
+    "Polyline",
+    "Polygon",
+    "Circle",
+    "Directions",
+    "InfoWindow",
+  ],
+}
