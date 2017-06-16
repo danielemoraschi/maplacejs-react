@@ -5,12 +5,6 @@ import PropUtils from './PropUtils';
 
 
 /**
- * New "empty" MaplaceJs library isntance.
- */
-const maplaceLib = new MaplaceLib();
-
-
-/**
  * MaplaceJs React.js component
  */
 class Maplace extends Component {
@@ -20,7 +14,16 @@ class Maplace extends Component {
    * from the children elements.
    */
   componentWillMount() {
-    this.propsWhitelisted = PropUtils.whiteListProps(Maplace.propTypes, this.props);
+    // New "empty" MaplaceJs library instance.
+    this.maplaceLib = new MaplaceLib();
+
+    // Validate and clean props against schema.
+    this.whiteListedProps = PropUtils.whiteListProps(
+      Maplace.propTypes,
+      this.props
+    );
+
+    // Generate locations array from children elements.
     this.locationsGeneratedViaChildren = {
       locations: React.Children.map(this.props.children, child => {
         return {
@@ -46,11 +49,11 @@ class Maplace extends Component {
 
   /**
    * Called after the component is mounted in the DOM.
-   * Will load MaplaceJs using defined parameters.
+   * Will load MaplaceJs using passed props.
    */
   componentDidMount() {
-    maplaceLib.Load({
-      ...this.propsWhitelisted,
+    this.maplaceLib.Load({
+      ...this.whiteListedProps,
       ...this.locationsGeneratedViaChildren,
     });
   }
