@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MaplaceLib from 'maplace-js';
 import PropUtils from './PropUtils';
+import Markers from './Markers';
+import Circles from './Circles';
+import Polyline from './Polyline';
+import Polygon from './Polygon';
+import Fusion from './Fusion';
+import Directions from './Directions';
+import Location from './Location';
 
 
 /**
@@ -10,27 +17,101 @@ import PropUtils from './PropUtils';
 class Maplace extends Component {
 
   /**
-   * Generates the array of locations
-   * from the children elements.
+   *
+   * @param props
+   */
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      // New "empty" MaplaceJs library instance.
+      maplace: this.props.maplace || new MaplaceLib(),
+
+      // Validated props against schema.
+      options: {
+        ...PropUtils.whiteListProps(
+          Maplace.propTypes,
+          this.props
+        ),
+        ...{
+          locations: [],
+          type: 'marker'
+        }
+      }
+    };
+  }
+
+  /**
+   * Generates `type`
+   * from the children element.
    */
   componentWillMount() {
-    // New "empty" MaplaceJs library instance.
-    this.maplaceLib = new MaplaceLib();
+    if (! this.props.children) {
+      return;
+    }
 
-    // Validate and clean props against schema.
-    this.whiteListedProps = PropUtils.whiteListProps(
-      Maplace.propTypes,
-      this.props
-    );
-
-    // Generate locations array from children elements.
-    this.locationsGeneratedViaChildren = {
-      locations: React.Children.map(this.props.children, child => {
+    this.setState({
+      type: React.Children.map(this.props.children, child => {
         return {
           ...child.props
         }
-      })
-    };
+      })[0].type
+    });
+  }
+
+  /**
+   *
+   * @param type string
+   * @param locations []
+   */
+  setLocations(type, locations) {
+    this.setState({
+      options: {
+        ...this.state.options,
+        ...{
+          type: type,
+          locations: locations
+        }
+      }
+    });
+  }
+
+  /**
+   *
+   * @returns {{Circles: string, Directions: string, Fusion: string, Polygon: string, Polyline: string, Markers: string}}
+   */
+  static getValidMaplaceTypes() {
+    return {
+      'Circles': 'circle',
+      'Directions': 'directions',
+      'Fusion': 'fusion',
+      'Polygon': 'polygon',
+      'Polyline': 'polyline',
+      'Markers': 'marker',
+      'default': 'marker',
+    }
+  }
+
+  /**
+   *
+   * @param componentName string
+   * @returns {*}
+   */
+  static mapMaplaceValidTypes(componentName) {
+    const validTypes = this.getValidMaplaceTypes();
+    return validTypes[componentName]
+      ? validTypes[componentName]
+      : validTypes['default'];
+  }
+
+  /**
+   *
+   * @param componentName
+   * @param type
+   * @returns {boolean}
+   */
+  static isValidMaplaceType(componentName, type) {
+    return Maplace.mapMaplaceValidTypes(componentName) === type;
   }
 
   /**
@@ -43,25 +124,55 @@ class Maplace extends Component {
         className={this.props.class_name}
         id={this.props.map_div.replace(/#|\./g, '')}
       >
+        {this.props.children && React.cloneElement(
+          this.props.children,
+          {
+            setLocations: this.setLocations.bind(this),
+          }
+        )}
       </div>
     );
   }
 
   /**
-   * Called after the component is mounted in the DOM.
-   * Will load MaplaceJs using passed props.
+   *
+   * Will load MaplaceJs using passed options.
    */
-  componentDidMount() {
-    this.maplaceLib.Load({
-      ...this.whiteListedProps,
-      ...this.locationsGeneratedViaChildren,
+  componentDidUpdate() {
+    this.state.maplace.Load({
+      ...this.state.options,
     });
   }
 }
 
 
 Maplace.propTypes = {
+  maplace: PropTypes.instanceOf(Maplace),
   class_name: PropTypes.string.isRequired,
+  children: (props, propName, componentName) => {
+    return PropUtils.checkChildrenAgainstTypes(
+      props,
+      propName,
+      componentName,
+      [
+        Markers,
+        Circles,
+        Polyline,
+        Polygon,
+        Fusion,
+        Directions
+      ]
+    );
+  },
+  locations: PropTypes.shape(Location.propTypes),
+  type: PropTypes.oneOf(
+    (() => {
+      const types = Maplace.getValidMaplaceTypes();
+      return Object.keys(types).map(function(key) {
+        return types[key];
+      });
+    })()
+  ),
   map_div: PropTypes.string.isRequired,
   debug: PropTypes.bool,
   controls_div: PropTypes.string,
@@ -72,13 +183,10 @@ Maplace.propTypes = {
   controls_on_map: PropTypes.bool,
   controls_applycss: PropTypes.bool,
   controls_position: PropTypes.number,
-  type: PropTypes.oneOf(
-    ['marker', 'circle', 'polyline', 'polygon', 'directions', 'fusion']),
   view_all: PropTypes.bool,
   view_all_text: PropTypes.string,
   pan_on_click: PropTypes.bool,
   start: PropTypes.number,
-  //locations: PropTypes.instanceOf(LocationList),//PropTypes.array,
   shared: PropTypes.object,
   map_options: PropTypes.object,
   stroke_options: PropTypes.shape({

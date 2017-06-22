@@ -20,6 +20,7 @@ class Location extends Component {
 Location.propTypes = {
   lat: PropTypes.number.isRequired,
   lon: PropTypes.number.isRequired,
+  type : PropTypes.oneOf(['marker', 'circle']),
   title: PropTypes.string,
   html: PropTypes.string,
   infoWindowMaxWidth: PropTypes.number,
@@ -32,9 +33,6 @@ Location.propTypes = {
   stroke_options: PropTypes.object,
   circle_options: PropTypes.object,
 };
-
-
-Location.defaultProps = {};
 
 
 export default Location;
