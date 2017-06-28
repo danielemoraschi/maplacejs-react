@@ -35,7 +35,7 @@ export default (() => {
 
     React.Children.forEach(prop, function (child) {
       componentTypesToCheck.forEach((component) => {
-        if (child.type !== component) {
+        if (child.type.name !== component) {
           errors.push(new Error(
             '`' + componentName +
             '` children should be of type `' + component + '`.'

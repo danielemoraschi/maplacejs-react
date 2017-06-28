@@ -4,7 +4,7 @@ import Directions from '../Directions';
 import Fusion from '../Fusion';
 import Location from '../Location';
 import Maplace from '../Maplace';
-import MaplaceTypeChecker from '../MaplaceTypeChecker';
+import MaplaceValidator from '../MaplaceValidator';
 import MarkedLocation from '../MarkedLocation';
 import Markers from '../Markers';
 import Polygon from '../Polygon';
@@ -20,7 +20,7 @@ describe(`index`, () => {
     expect(Fusion).toBeDefined();
     expect(Location).toBeDefined();
     expect(Maplace).toBeDefined();
-    expect(MaplaceTypeChecker).toBeDefined();
+    expect(MaplaceValidator).toBeDefined();
     expect(MarkedLocation).toBeDefined();
     expect(Markers).toBeDefined();
     expect(Polygon).toBeDefined();

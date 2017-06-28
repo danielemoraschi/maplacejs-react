@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import PropUtils from './PropUtils';
-import MaplaceTypeChecker from './MaplaceTypeChecker';
-import Location from './Location';
-import MarkedLocation from './MarkedLocation';
-import CircledLocation from './CircledLocation';
+import MaplaceValidator from './MaplaceValidator';
 
 
 /**
@@ -30,26 +26,7 @@ class Markers extends Component {
    *
    * @type {{type: ((p1:*, p2:*, p3?:*)), children: ((p1?:*, p2?:*, p3?:*))}}
    */
-  static propTypes = {
-    type: (props, propName, componentName) => {
-      if(MaplaceTypeChecker.isValidMaplaceType(componentName, props.type)) {
-        return null
-      }
-      return new Error('Invalid type `' + props.type + '`');
-    },
-    children: (props, propName, componentName) => {
-      return PropUtils.checkChildrenAgainstTypes(
-        props,
-        propName,
-        componentName,
-        [
-          Location,
-          MarkedLocation,
-          CircledLocation
-        ]
-      );
-    },
-  };
+  static propTypes = MaplaceValidator.getMarkersTypePropTypes();
 
   /**
    *
