@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Maplace from './Maplace';
 import PropUtils from './PropUtils';
+import MaplaceTypeChecker from './MaplaceTypeChecker';
 import Location from './Location';
 import MarkedLocation from './MarkedLocation';
 import CircledLocation from './CircledLocation';
@@ -32,7 +32,7 @@ class Markers extends Component {
    */
   static propTypes = {
     type: (props, propName, componentName) => {
-      if(Maplace.isValidMaplaceType(componentName, props.type)) {
+      if(MaplaceTypeChecker.isValidMaplaceType(componentName, props.type)) {
         return null
       }
       return new Error('Invalid type `' + props.type + '`');

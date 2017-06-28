@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MaplaceLib from 'maplace-js';
+import MaplaceTypeChecker from './MaplaceTypeChecker';
 import PropUtils from './PropUtils';
 import Markers from './Markers';
 import Circles from './Circles';
@@ -77,44 +78,6 @@ class Maplace extends Component {
   }
 
   /**
-   *
-   * @returns {{Circles: string, Directions: string, Fusion: string, Polygon: string, Polyline: string, Markers: string}}
-   */
-  static getValidMaplaceTypes() {
-    return {
-      'Circles': 'circle',
-      'Directions': 'directions',
-      'Fusion': 'fusion',
-      'Polygon': 'polygon',
-      'Polyline': 'polyline',
-      'Markers': 'marker',
-      'default': 'marker',
-    }
-  }
-
-  /**
-   *
-   * @param componentName string
-   * @returns {*}
-   */
-  static mapMaplaceValidTypes(componentName) {
-    const validTypes = this.getValidMaplaceTypes();
-    return validTypes[componentName]
-      ? validTypes[componentName]
-      : validTypes['default'];
-  }
-
-  /**
-   *
-   * @param componentName
-   * @param type
-   * @returns {boolean}
-   */
-  static isValidMaplaceType(componentName, type) {
-    return Maplace.mapMaplaceValidTypes(componentName) === type;
-  }
-
-  /**
    * Render the component.
    * @returns {JSX}
    */
@@ -167,7 +130,7 @@ Maplace.propTypes = {
   locations: PropTypes.shape(Location.propTypes),
   type: PropTypes.oneOf(
     (() => {
-      const types = Maplace.getValidMaplaceTypes();
+      const types = MaplaceTypeChecker.getValidMaplaceTypes();
       return Object.keys(types).map(function(key) {
         return types[key];
       });
